@@ -8,8 +8,17 @@
 
 using namespace std;
 
+/**
+ * Classe responsável por serializar e desserializar o índice invertido.
+ * Os dados são salvos em formato binário para eficiência.
+ */
 class Serializer {
 public:
+    /**
+     * Serializa o índice para um arquivo binário.
+     * Salva o mapeamento de documentos e o índice invertido.
+     * Lança uma exceção se não conseguir abrir o arquivo.
+     */
     static void serialize(const Index& index, const string& filename) {
         ofstream file(filename, ios::binary);
         if (!file) {
@@ -50,6 +59,11 @@ public:
         file.close();
     }
     
+    /**
+     * Desserializa o índice de um arquivo binário.
+     * Retorna um objeto Index reconstruído.
+     * Lança uma exceção se não conseguir abrir o arquivo.
+     */
     static Index deserialize(const string& filename) {
         ifstream file(filename, ios::binary);
         if (!file) {

@@ -11,13 +11,22 @@
 
 using namespace std;
 
+/**
+ * Classe responsável pelo processamento de texto.
+ * Remove pontuações, converte para minúsculas e remove stop words.
+ */
 class TextProcessor {
 private:
+    // Conjunto de stop words (palavras comuns a serem ignoradas)
     unordered_set<string> stopWords;
 
 public:
     TextProcessor() = default;
     
+    /**
+     * Carrega as stop words de um arquivo.
+     * Retorna true se o arquivo foi carregado com sucesso, false caso contrário.
+     */
     bool loadStopWords(const string& filename) {
         ifstream file(filename);
         if (!file.is_open()) {
@@ -35,6 +44,11 @@ public:
         return true;
     }
     
+    /**
+     * Processa um texto: remove pontuações, converte para minúsculas,
+     * tokeniza e remove stop words.
+     * Retorna um vetor de palavras processadas.
+     */
     vector<string> process(const string& text) const {
         vector<string> tokens = tokenize(text);
         vector<string> result;
@@ -49,6 +63,11 @@ public:
         return result;
     }
 
+    /**
+     * Normaliza uma palavra: remove pontuações e converte para minúsculas.
+     * Mantém a acentuação.
+     * Esta função é estática para ser usada também na normalização dos termos de busca.
+     */
     static string normalizeWord(const string& word) {
         string result;
         
@@ -62,6 +81,9 @@ public:
     }
 
 private:
+    /**
+     * Verifica se um caractere é de pontuação ASCII.
+     */
     static bool isPunctuation(char c) {
         return (c >= 33 && c <= 47) ||    // !"#$%&'()*+,-./
                (c >= 58 && c <= 64) ||    // :;<=>?@
@@ -69,7 +91,10 @@ private:
                (c >= 123 && c <= 126);    // {|}~
     }
     
-
+    /**
+     * Converte um caractere ASCII para minúscula.
+     * Caracteres não-ASCII (como acentuados) são mantidos.
+     */
     static char toLower(char c) {
         if (c >= 'A' && c <= 'Z') {
             return static_cast<char>(c + 32);  // 'a' - 'A' = 32
@@ -77,6 +102,9 @@ private:
         return c;
     }
     
+    /**
+     * Tokeniza o texto em palavras (split por espaços).
+     */
     vector<string> tokenize(const string& text) const {
         vector<string> tokens;
         istringstream iss(text);

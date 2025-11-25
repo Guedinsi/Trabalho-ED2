@@ -1,4 +1,10 @@
 CXX = g++
+# Flags de compilação:
+# -std=c++17: Usa o padrão C++17 (necessário para <filesystem>)
+# -Wall: Ativa todos os warnings comuns
+# -Wextra: Warnings extras
+# -pedantic: Conformidade rigorosa com o padrão
+# -I.: Inclui o diretório atual no path de includes
 CXXFLAGS = -std=c++17 -Wall -Wextra -pedantic -I.
 TARGET = indice
 SOURCES = main.cpp

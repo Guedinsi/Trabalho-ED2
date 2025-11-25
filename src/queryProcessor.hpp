@@ -8,13 +8,22 @@
 
 using namespace std;
 
+/**
+ * Classe responsável por processar consultas no índice invertido.
+ * Suporta consultas com uma única palavra ou múltiplas palavras (operação AND).
+ */
 class QueryProcessor {
 private:
+    // Referência para o índice invertido (const, pois não modifica)
     const Index& index;
 
 public:
     QueryProcessor(const Index& idx) : index(idx) {}
     
+    /**
+     * Processa uma consulta com uma única palavra.
+     * Retorna os nomes dos arquivos que contêm a palavra.
+     */
     vector<string> querySingle(const string& word) const {
         vector<string> result;
         set<int> docIds = index.getDocumentsForWord(word);
@@ -26,6 +35,10 @@ public:
         return result;
     }
     
+    /**
+     * Processa uma consulta com múltiplas palavras (operação AND).
+     * Retorna os nomes dos arquivos que contêm todas as palavras.
+     */
     vector<string> queryMultiple(const vector<string>& words) const {
         if (words.empty()) {
             return {};

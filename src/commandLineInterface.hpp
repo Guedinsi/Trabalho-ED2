@@ -12,14 +12,24 @@
 
 using namespace std;
 
+/**
+ * Classe responsável pela interface de linha de comando.
+ * Interpreta os argumentos passados e orquestra as operações.
+ */
 class CommandLineInterface {
 public:
+    /**
+     * Construtor: armazena os argumentos da linha de comando.
+     */
     CommandLineInterface(int argc, char* argv[]) {
         for (int i = 1; i < argc; ++i) {
             args.push_back(argv[i]);
         }
     }
     
+    /**
+     * Executa o comando correspondente aos argumentos.
+     */
     void run() {
         if (args.empty()) {
             showUsage();
@@ -45,14 +55,21 @@ public:
     }
 
 private:
+    // Argumentos da linha de comando (sem o nome do programa)
     vector<string> args;
-    
+
+    /**
+     * Mostra as instruções de uso.
+     */
     void showUsage() const {
         cout << "Uso:\n";
         cout << "  indice construir <caminho_do_diretorio>\n";
         cout << "  indice buscar <termo_de_busca> [<termo2> ...]\n";
     }
     
+    /**
+     * Constrói o índice a partir de um diretório.
+     */
     void buildIndex(const string& directoryPath) {
         try {
             Index index;
@@ -75,6 +92,9 @@ private:
         }
     }
     
+    /**
+     * Realiza uma busca por termos no índice.
+     */
     void search(const vector<string>& terms) {
         try {
             Index index = Serializer::deserialize("index.dat");
