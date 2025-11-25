@@ -94,15 +94,36 @@ private:
     
     /**
      * Realiza uma busca por termos no índice.
+     * Ignora stop words na busca, mas não interrompe a busca se encontrar stop words.
      */
     void search(const vector<string>& terms) {
         try {
             Index index = Serializer::deserialize("index.dat");
             QueryProcessor queryProcessor(index);
             
+            // Carrega stop words para filtrar os termos de busca
+            TextProcessor textProcessor;
+            if (!textProcessor.loadStopWords("data/stopwords.txt")) {
+                cerr << "Aviso: Não foi possível carregar stop words, buscando com todos os termos.\n";
+            }
+            
+            // Normaliza e filtra os termos de busca (remove stop words)
             vector<string> normalizedTerms;
             for (const string& term : terms) {
-                normalizedTerms.push_back(TextProcessor::normalizeWord(term));
+                string normalized = TextProcessor::normalizeWord(term);
+                
+                // Ignora stop words, mas mantém outros termos
+                if (!normalized.empty() && !textProcessor.isStopWord(normalized)) {
+                    normalizedTerms.push_back(normalized);
+                } else {
+                    cout << "Aviso: Termo '" << term << "' é uma stop word e será ignorado na busca.\n";
+                }
+            }
+            
+            // Se todos os termos eram stop words, informa o usuário
+            if (normalizedTerms.empty()) {
+                cout << "Todos os termos de busca são stop words. Nenhum documento será retornado.\n";
+                return;
             }
             
             vector<string> results;
