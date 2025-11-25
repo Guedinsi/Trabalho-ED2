@@ -1,4 +1,6 @@
     Projeto: Mecanismo de Indexação de Arquivos
+
+Repositório no GitHub: https://github.com/Guedinsi/Trabalho-ED2
 _______________________________________________
     
     Descrição:
@@ -51,6 +53,8 @@ Exemplo:
 
 Caso queira limpar os artefatos:
 - make clean
+_______________________________________________
 
-Limitações:
-- Considera símbolos comuns da lingua portuguesa UTF-8 de forma manual
+    Limitações:
+
+Considera símbolos comuns da lingua portuguesa UTF-8 de forma manual.
