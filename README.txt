@@ -9,6 +9,7 @@ para documentos de texto, com funcionalidades de:
   e o serializa em disco ("index.dat").
 - Busca: carrega o índice serializado e permite consultas por palavras-chave, retornando os
   documentos que contêm os termos pesquisados.
+- Avisos: mensagens de erro nos vários processos e aviso caso uma stopword foi buscada
 _______________________________________________
     
     Arquivos:
@@ -50,3 +51,6 @@ Exemplo:
 
 Caso queira limpar os artefatos:
 - make clean
+
+Limitações:
+- Considera símbolos comuns da lingua portuguesa UTF-8 de forma manual

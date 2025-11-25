@@ -52,5 +52,11 @@
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "typeinfo": "cpp"
-    }
+    },
+    "cSpell.words": [
+        "diretorio",
+        "indice",
+        "stopwords",
+        "tokenizar"
+    ]
 }
