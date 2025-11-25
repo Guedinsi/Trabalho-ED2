@@ -9,22 +9,24 @@
 #include <algorithm>
 #include <cctype>
 
+using namespace std;
+
 class TextProcessor {
 private:
-    std::unordered_set<std::string> stopWords;
+    unordered_set<string> stopWords;
 
 public:
     TextProcessor() = default;
     
-    bool loadStopWords(const std::string& filename) {
-        std::ifstream file(filename);
+    bool loadStopWords(const string& filename) {
+        ifstream file(filename);
         if (!file.is_open()) {
             return false;
         }
         
-        std::string word;
+        string word;
         while (file >> word) {
-            std::string normalized = normalizeWord(word);
+            string normalized = normalizeWord(word);
             if (!normalized.empty()) {
                 stopWords.insert(normalized);
             }
@@ -33,12 +35,12 @@ public:
         return true;
     }
     
-    std::vector<std::string> process(const std::string& text) const {
-        std::vector<std::string> tokens = tokenize(text);
-        std::vector<std::string> result;
+    vector<string> process(const string& text) const {
+        vector<string> tokens = tokenize(text);
+        vector<string> result;
         
-        for (const std::string& token : tokens) {
-            std::string normalized = normalizeWord(token);
+        for (const string& token : tokens) {
+            string normalized = normalizeWord(token);
             if (!normalized.empty() && stopWords.find(normalized) == stopWords.end()) {
                 result.push_back(normalized);
             }
@@ -49,8 +51,8 @@ public:
 
     // Normaliza palavra: remove pontuações e converte para minúsculas
     // MANTÉM ACENTUAÇÃO (usuário acerta a acentuação)
-    static std::string normalizeWord(const std::string& word) {
-        std::string result;
+    static string normalizeWord(const string& word) {
+        string result;
         
         for (char c : word) {
             if (!isPunctuation(c)) {
@@ -78,10 +80,10 @@ private:
         return c;
     }
     
-    std::vector<std::string> tokenize(const std::string& text) const {
-        std::vector<std::string> tokens;
-        std::istringstream iss(text);
-        std::string token;
+    vector<string> tokenize(const string& text) const {
+        vector<string> tokens;
+        istringstream iss(text);
+        string token;
         
         while (iss >> token) {
             tokens.push_back(token);
