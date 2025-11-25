@@ -10,6 +10,8 @@
 #include <vector>
 #include <string>
 
+using namespace std;
+
 class CommandLineInterface {
 public:
     CommandLineInterface(int argc, char* argv[]) {
@@ -35,7 +37,7 @@ public:
                 showUsage();
                 return;
             }
-            std::vector<std::string> terms(args.begin() + 1, args.end());
+            vector<string> terms(args.begin() + 1, args.end());
             search(terms);
         } else {
             showUsage();
@@ -43,20 +45,20 @@ public:
     }
 
 private:
-    std::vector<std::string> args;
+    vector<string> args;
     
     void showUsage() const {
-        std::cout << "Uso:\n";
-        std::cout << "  indice construir <caminho_do_diretorio>\n";
-        std::cout << "  indice buscar <termo_de_busca> [<termo2> ...]\n";
+        cout << "Uso:\n";
+        cout << "  indice construir <caminho_do_diretorio>\n";
+        cout << "  indice buscar <termo_de_busca> [<termo2> ...]\n";
     }
     
-    void buildIndex(const std::string& directoryPath) {
+    void buildIndex(const string& directoryPath) {
         try {
             Index index;
             TextProcessor textProcessor;
             if (!textProcessor.loadStopWords("data/stopwords.txt")) {
-                std::cerr << "Erro: Não foi possível carregar o arquivo data/stopwords.txt\n";
+                cerr << "Erro: Não foi possível carregar o arquivo data/stopwords.txt\n";
                 return;
             }
             
@@ -65,26 +67,26 @@ private:
             
             Serializer::serialize(index, "index.dat");
             
-            std::cout << "Índice construído e salvo em index.dat\n";
-            std::cout << "Documentos indexados: " << index.getAllDocumentIds().size() << "\n";
-            std::cout << "Palavras únicas no índice: " << index.getAllWords().size() << "\n";
-        } catch (const std::exception& e) {
-            std::cerr << "Erro durante a indexação: " << e.what() << std::endl;
+            cout << "Índice construído e salvo em index.dat\n";
+            cout << "Documentos indexados: " << index.getAllDocumentIds().size() << "\n";
+            cout << "Palavras únicas no índice: " << index.getAllWords().size() << "\n";
+        } catch (const exception& e) {
+            cerr << "Erro durante a indexação: " << e.what() << endl;
         }
     }
     
-    void search(const std::vector<std::string>& terms) {
+    void search(const vector<string>& terms) {
         try {
             Index index = Serializer::deserialize("index.dat");
             QueryProcessor queryProcessor(index);
             
             // NOVO: Normalizar os termos de busca
-            std::vector<std::string> normalizedTerms;
-            for (const std::string& term : terms) {
+            vector<string> normalizedTerms;
+            for (const string& term : terms) {
                 normalizedTerms.push_back(TextProcessor::normalizeWord(term));
             }
             
-            std::vector<std::string> results;
+            vector<string> results;
             if (normalizedTerms.size() == 1) {
                 results = queryProcessor.querySingle(normalizedTerms[0]);
             } else {
@@ -92,16 +94,16 @@ private:
             }
             
             if (results.empty()) {
-                std::cout << "Nenhum documento encontrado.\n";
+                cout << "Nenhum documento encontrado.\n";
             } else {
-                std::cout << "Documentos encontrados (" << results.size() << "):\n";
-                for (const std::string& filename : results) {
-                    std::cout << "  " << filename << std::endl;
+                cout << "Documentos encontrados (" << results.size() << "):\n";
+                for (const string& filename : results) {
+                    cout << "  " << filename << endl;
                 }
             }
-        } catch (const std::exception& e) {
-            std::cerr << "Erro durante a busca: " << e.what() << std::endl;
-            std::cerr << "Execute primeiro: indice construir <diretorio>\n";
+        } catch (const exception& e) {
+            cerr << "Erro durante a busca: " << e.what() << endl;
+            cerr << "Execute primeiro: indice construir <diretorio>\n";
         }
     }
 };

@@ -7,17 +7,19 @@
 #include <vector>
 #include <algorithm>
 
+using namespace std;
+
 class Index {
 private:
-    std::unordered_map<std::string, std::set<int>> invertedIndex;
-    std::unordered_map<int, std::string> idToFile;
-    std::unordered_map<std::string, int> fileToId;
+    unordered_map<string, set<int>> invertedIndex;
+    unordered_map<int, string> idToFile;
+    unordered_map<string, int> fileToId;
     int nextId;
 
 public:
     Index() : nextId(1) {}
     
-    int addDocument(const std::string& filename) {
+    int addDocument(const string& filename) {
         if (fileToId.find(filename) != fileToId.end()) {
             return fileToId[filename];
         }
@@ -28,19 +30,19 @@ public:
         return docId;
     }
     
-    void addWordToDocument(const std::string& word, int docId) {
+    void addWordToDocument(const string& word, int docId) {
         invertedIndex[word].insert(docId);
     }
     
-    std::set<int> getDocumentsForWord(const std::string& word) const {
+    set<int> getDocumentsForWord(const string& word) const {
         auto it = invertedIndex.find(word);
         if (it != invertedIndex.end()) {
             return it->second;
         }
-        return std::set<int>();
+        return set<int>();
     }
     
-    std::string getFileName(int docId) const {
+    string getFileName(int docId) const {
         auto it = idToFile.find(docId);
         if (it != idToFile.end()) {
             return it->second;
@@ -48,7 +50,7 @@ public:
         return "";
     }
     
-    int getFileId(const std::string& filename) const {
+    int getFileId(const string& filename) const {
         auto it = fileToId.find(filename);
         if (it != fileToId.end()) {
             return it->second;
@@ -56,16 +58,16 @@ public:
         return -1;
     }
     
-    std::set<int> getAllDocumentIds() const {
-        std::set<int> allIds;
+    set<int> getAllDocumentIds() const {
+        set<int> allIds;
         for (const auto& pair : idToFile) {
             allIds.insert(pair.first);
         }
         return allIds;
     }
     
-    std::vector<std::string> getAllWords() const {
-        std::vector<std::string> words;
+    vector<string> getAllWords() const {
+        vector<string> words;
         for (const auto& pair : invertedIndex) {
             words.push_back(pair.first);
         }

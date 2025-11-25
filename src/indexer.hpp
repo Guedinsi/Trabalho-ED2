@@ -7,7 +7,8 @@
 #include <fstream>
 #include <sstream>
 
-namespace fs = std::filesystem;
+using namespace std;
+namespace fs = filesystem;
 
 class Indexer {
 private:
@@ -17,26 +18,26 @@ private:
 public:
     Indexer(Index& idx, TextProcessor& tp) : index(idx), textProcessor(tp) {}
     
-    void indexDirectory(const std::string& directoryPath) {
+    void indexDirectory(const string& directoryPath) {
         for (const auto& entry : fs::recursive_directory_iterator(directoryPath)) {
             if (entry.is_regular_file() && entry.path().extension() == ".txt") {
-                std::string filename = entry.path().string();
+                string filename = entry.path().string();
                 
                 int docId = index.addDocument(filename);
                 
-                std::ifstream file(filename);
+                ifstream file(filename);
                 if (!file.is_open()) {
                     continue; // Pula arquivos que não podem ser abertos
                 }
                 
-                std::stringstream buffer;
+                stringstream buffer;
                 buffer << file.rdbuf();
-                std::string content = buffer.str();
+                string content = buffer.str();
                 file.close();
                 
-                std::vector<std::string> words = textProcessor.process(content);
+                vector<string> words = textProcessor.process(content);
                 
-                for (const std::string& word : words) {
+                for (const string& word : words) {
                     index.addWordToDocument(word, docId);
                 }
             }

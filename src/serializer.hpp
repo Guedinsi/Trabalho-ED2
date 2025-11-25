@@ -6,12 +6,14 @@
 #include <fstream>
 #include <stdexcept>
 
+using namespace std;
+
 class Serializer {
 public:
-    static void serialize(const Index& index, const std::string& filename) {
-        std::ofstream file(filename, std::ios::binary);
+    static void serialize(const Index& index, const string& filename) {
+        ofstream file(filename, ios::binary);
         if (!file) {
-            throw std::runtime_error("Não foi possível abrir o arquivo para escrita: " + filename);
+            throw runtime_error("Não foi possível abrir o arquivo para escrita: " + filename);
         }
         
         // Serializa o mapeamento de documentos
@@ -22,7 +24,7 @@ public:
             int docId = pair.first;
             file.write(reinterpret_cast<const char*>(&docId), sizeof(docId));
             
-            const std::string& filenameStr = pair.second;
+            const string& filenameStr = pair.second;
             size_t filenameSize = filenameStr.size();
             file.write(reinterpret_cast<const char*>(&filenameSize), sizeof(filenameSize));
             file.write(filenameStr.c_str(), filenameSize);
@@ -33,12 +35,12 @@ public:
         file.write(reinterpret_cast<const char*>(&numWords), sizeof(numWords));
         
         for (const auto& pair : index.invertedIndex) {
-            const std::string& word = pair.first;
+            const string& word = pair.first;
             size_t wordSize = word.size();
             file.write(reinterpret_cast<const char*>(&wordSize), sizeof(wordSize));
             file.write(word.c_str(), wordSize);
             
-            const std::set<int>& docIds = pair.second;
+            const set<int>& docIds = pair.second;
             size_t numDocs = docIds.size();
             file.write(reinterpret_cast<const char*>(&numDocs), sizeof(numDocs));
             
@@ -50,10 +52,10 @@ public:
         file.close();
     }
     
-    static Index deserialize(const std::string& filename) {
-        std::ifstream file(filename, std::ios::binary);
+    static Index deserialize(const string& filename) {
+        ifstream file(filename, ios::binary);
         if (!file) {
-            throw std::runtime_error("Não foi possível abrir o arquivo para leitura: " + filename);
+            throw runtime_error("Não foi possível abrir o arquivo para leitura: " + filename);
         }
         
         Index index;
@@ -68,7 +70,7 @@ public:
             
             size_t filenameSize;
             file.read(reinterpret_cast<char*>(&filenameSize), sizeof(filenameSize));
-            std::string filename(filenameSize, ' ');
+            string filename(filenameSize, ' ');
             file.read(&filename[0], filenameSize);
             
             index.idToFile[docId] = filename;
@@ -86,13 +88,13 @@ public:
         for (size_t i = 0; i < numWords; ++i) {
             size_t wordSize;
             file.read(reinterpret_cast<char*>(&wordSize), sizeof(wordSize));
-            std::string word(wordSize, ' ');
+            string word(wordSize, ' ');
             file.read(&word[0], wordSize);
             
             size_t numDocs;
             file.read(reinterpret_cast<char*>(&numDocs), sizeof(numDocs));
             
-            std::set<int> docIds;
+            set<int> docIds;
             for (size_t j = 0; j < numDocs; ++j) {
                 int docId;
                 file.read(reinterpret_cast<char*>(&docId), sizeof(docId));
