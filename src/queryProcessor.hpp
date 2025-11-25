@@ -31,15 +31,12 @@ public:
             return {};
         }
         
-        // Começa com o primeiro conjunto de documentos
         set<int> result = index.getDocumentsForWord(words[0]);
         
-        // Faz a interseção com os demais conjuntos
         for (size_t i = 1; i < words.size() && !result.empty(); ++i) {
             set<int> current = index.getDocumentsForWord(words[i]);
             set<int> intersection;
             
-            // Interseção manual usando algoritmos da STL
             set_intersection(
                 result.begin(), result.end(),
                 current.begin(), current.end(),

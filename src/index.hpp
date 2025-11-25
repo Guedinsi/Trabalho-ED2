@@ -74,7 +74,6 @@ public:
         return words;
     }
     
-    // Para serialização
     friend class Serializer;
 };
 

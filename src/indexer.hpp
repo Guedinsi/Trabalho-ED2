@@ -27,7 +27,7 @@ public:
                 
                 ifstream file(filename);
                 if (!file.is_open()) {
-                    continue; // Pula arquivos que não podem ser abertos
+                    continue; 
                 }
                 
                 stringstream buffer;

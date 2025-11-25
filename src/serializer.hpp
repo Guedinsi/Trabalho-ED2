@@ -16,7 +16,6 @@ public:
             throw runtime_error("Não foi possível abrir o arquivo para escrita: " + filename);
         }
         
-        // Serializa o mapeamento de documentos
         size_t numDocuments = index.idToFile.size();
         file.write(reinterpret_cast<const char*>(&numDocuments), sizeof(numDocuments));
         
@@ -30,7 +29,6 @@ public:
             file.write(filenameStr.c_str(), filenameSize);
         }
         
-        // Serializa o índice invertido
         size_t numWords = index.invertedIndex.size();
         file.write(reinterpret_cast<const char*>(&numWords), sizeof(numWords));
         
@@ -60,7 +58,6 @@ public:
         
         Index index;
         
-        // Desserializa o mapeamento de documentos
         size_t numDocuments;
         file.read(reinterpret_cast<char*>(&numDocuments), sizeof(numDocuments));
         
@@ -81,7 +78,6 @@ public:
             }
         }
         
-        // Desserializa o índice invertido
         size_t numWords;
         file.read(reinterpret_cast<char*>(&numWords), sizeof(numWords));
         

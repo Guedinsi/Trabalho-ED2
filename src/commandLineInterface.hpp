@@ -80,7 +80,6 @@ private:
             Index index = Serializer::deserialize("index.dat");
             QueryProcessor queryProcessor(index);
             
-            // NOVO: Normalizar os termos de busca
             vector<string> normalizedTerms;
             for (const string& term : terms) {
                 normalizedTerms.push_back(TextProcessor::normalizeWord(term));

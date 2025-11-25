@@ -49,14 +49,12 @@ public:
         return result;
     }
 
-    // Normaliza palavra: remove pontuações e converte para minúsculas
-    // MANTÉM ACENTUAÇÃO (usuário acerta a acentuação)
     static string normalizeWord(const string& word) {
         string result;
         
         for (char c : word) {
             if (!isPunctuation(c)) {
-                result += toLower(c);  // Converte para minúscula, mantém acentos
+                result += toLower(c);  
             }
         }
         
@@ -71,8 +69,7 @@ private:
                (c >= 123 && c <= 126);    // {|}~
     }
     
-    // Converte para minúscula apenas caracteres ASCII A-Z
-    // Preserva caracteres acentuados
+
     static char toLower(char c) {
         if (c >= 'A' && c <= 'Z') {
             return static_cast<char>(c + 32);  // 'a' - 'A' = 32
